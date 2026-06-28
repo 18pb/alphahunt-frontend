@@ -4,6 +4,7 @@ import Selector from "../components/Selector";
 import Input from "../components/Input";
 import Done from "../components/Done";
 import { useNavigate } from "react-router-dom";
+import BASE_URL from "../api";
 
 const Game = () => {
   const [current, setCurrent] = useState("a");
@@ -26,7 +27,7 @@ const Game = () => {
     const updated = { ...done, [current]: [...(done[current] || []), word] };
     setDone(updated);
     axios.post(
-      "http://localhost:3001/api/progress",
+      `${BASE_URL}/api/progress`,
       { done: updated },
       { headers: { Authorization: `Bearer ${token}` } },
     );
@@ -56,7 +57,7 @@ const Game = () => {
   useEffect(() => {
     const fetchProgress = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/progress", {
+        const res = await axios.get(`${BASE_URL}/api/progress`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setDone(res.data.done || {});
@@ -76,7 +77,6 @@ const Game = () => {
 
   return (
     <div className="bg-gray-950 min-h-screen">
-      {/* Navbar */}
       <div className="border-b border-gray-800 px-6 py-4 flex items-center justify-between">
         <div className="text-amber-400 font-bold text-2xl tracking-tight">
           AlphaHunt
@@ -94,7 +94,6 @@ const Game = () => {
           </button>
         </div>
       </div>
-
       {loading ? (
         <div className="flex flex-col items-center justify-center mt-20 gap-3">
           <div className="text-amber-400 text-2xl font-bold">
